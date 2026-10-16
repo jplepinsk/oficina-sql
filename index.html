@@ -35,6 +35,8 @@
   --f-tcl: #b02a42;
   --f-adv: #0d6b74;
   --f-proj: #8a5a2b;
+  --f-game: #a8327f;
+  --tok-bad: #ff8a80;
   --ok: #1b7a46;
   --ok-bg: #e5f3ea;
   --warn: #9a5b00;
@@ -51,7 +53,7 @@
   :root:not([data-theme="light"]) {
     --paper: #10181c; --surface: #172227; --ink: #e3ebec; --muted: #9aabb0; --line: #2a3a40;
     --accent: #4fc0c8; --accent-ink: #0b1a1d; --code-bg: #0b1317; --code-fg: #dfe8ea; --code-line: #1f2d34;
-    --f-apoio: #a3b1b6; --f-ddl: #7ea6ff; --f-dml: #f0a54a; --f-dql: #5cd0a0; --f-dcl: #c597ee; --f-tcl: #ff8296; --f-adv: #4fc0c8; --f-proj: #e0a66d;
+    --f-apoio: #a3b1b6; --f-ddl: #7ea6ff; --f-dml: #f0a54a; --f-dql: #5cd0a0; --f-dcl: #c597ee; --f-tcl: #ff8296; --f-adv: #4fc0c8; --f-proj: #e0a66d; --f-game: #f08ccf;
     --ok: #6fd69a; --ok-bg: #173527; --warn: #f1bd5c; --warn-bg: #3a2c12; --bad: #ff8a80; --bad-bg: #3d1c1a; --tint: #1c2a30;
     color-scheme: dark;
   }
@@ -59,7 +61,7 @@
 :root[data-theme="dark"] {
   --paper: #10181c; --surface: #172227; --ink: #e3ebec; --muted: #9aabb0; --line: #2a3a40;
   --accent: #4fc0c8; --accent-ink: #0b1a1d; --code-bg: #0b1317; --code-fg: #dfe8ea; --code-line: #1f2d34;
-  --f-apoio: #a3b1b6; --f-ddl: #7ea6ff; --f-dml: #f0a54a; --f-dql: #5cd0a0; --f-dcl: #c597ee; --f-tcl: #ff8296; --f-adv: #4fc0c8; --f-proj: #e0a66d;
+  --f-apoio: #a3b1b6; --f-ddl: #7ea6ff; --f-dml: #f0a54a; --f-dql: #5cd0a0; --f-dcl: #c597ee; --f-tcl: #ff8296; --f-adv: #4fc0c8; --f-proj: #e0a66d; --f-game: #f08ccf;
   --ok: #6fd69a; --ok-bg: #173527; --warn: #f1bd5c; --warn-bg: #3a2c12; --bad: #ff8a80; --bad-bg: #3d1c1a; --tint: #1c2a30;
   color-scheme: dark;
 }
@@ -74,7 +76,7 @@ code { font-family: var(--mono); font-size: .88em; background: var(--tint); padd
 h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.15; margin: 0; }
 [data-f="apoio"] { --f: var(--f-apoio); } [data-f="ddl"] { --f: var(--f-ddl); } [data-f="dml"] { --f: var(--f-dml); }
 [data-f="dql"] { --f: var(--f-dql); } [data-f="dcl"] { --f: var(--f-dcl); } [data-f="tcl"] { --f: var(--f-tcl); }
-[data-f="adv"] { --f: var(--f-adv); } [data-f="proj"] { --f: var(--f-proj); } [data-f="lab"] { --f: var(--f-apoio); }
+[data-f="adv"] { --f: var(--f-adv); } [data-f="proj"] { --f: var(--f-proj); } [data-f="lab"] { --f: var(--f-apoio); } [data-f="game"] { --f: var(--f-game); }
 
 .app { display: grid; grid-template-columns: 272px minmax(0, 1fr); min-height: 100%; }
 .side { position: sticky; top: 0; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); background: var(--surface);
@@ -218,6 +220,63 @@ main { min-width: 0; }
 .pill.warn { color: var(--warn); background: var(--warn-bg); } .pill.idle { color: var(--muted); background: var(--tint); }
 .res-item small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
 
+/* Jogos */
+.xp { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; align-items: baseline; max-width: 560px; }
+.xp b { font: 800 1.7rem/1 var(--display); font-stretch: 115%; color: var(--f); font-variant-numeric: tabular-nums; }
+.xp span { color: var(--muted); font-size: .9rem; }
+.xp .meter { grid-column: 1 / -1; }
+.xp .meter i { background: var(--f); }
+.game { padding: 34px 0; border-top: 1px solid var(--line); scroll-margin-top: 20px; }
+.game-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.game-head h2 { font-size: 1.55rem; font-weight: 750; font-stretch: 110%; }
+.round-top { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; }
+.round-top b { font-family: var(--display); font-stretch: 106%; font-size: 1.05rem; }
+.round-count { margin-left: auto; font: .76rem/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.feedback { min-height: 1.6em; margin: 12px 0 0; font-weight: 600; }
+.feedback.ok { color: var(--ok); } .feedback.bad { color: var(--bad); }
+
+input.gap { font: inherit; color: var(--code-fg); background: color-mix(in srgb, var(--tok-kw) 12%, transparent); border: 0; border-bottom: 2px solid var(--tok-kw); border-radius: 3px 3px 0 0; padding: 0 3px; margin: 1px 0; text-transform: uppercase; }
+input.gap:focus { outline: none; }
+input.gap.current { background: color-mix(in srgb, var(--tok-fn) 26%, transparent); border-bottom-color: var(--tok-fn); }
+input.gap.ok { border-bottom-color: var(--tok-str); color: var(--tok-str); background: color-mix(in srgb, var(--tok-str) 14%, transparent); }
+input.gap.bad { border-bottom-color: var(--tok-bad); color: var(--tok-bad); background: color-mix(in srgb, var(--tok-bad) 14%, transparent); }
+.bank { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+.word { font: 600 .8rem/1 var(--mono); padding: 9px 11px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 6px; cursor: pointer; }
+.word:hover { border-color: var(--f); color: var(--f); }
+
+.mem-stats { display: flex; gap: 18px; flex-wrap: wrap; font: .82rem/1 var(--mono); color: var(--muted); margin: 6px 0 14px; font-variant-numeric: tabular-nums; }
+.mem-stats b { color: var(--ink); }
+.mem-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.mem-card { position: relative; min-height: 118px; border: 0; padding: 0; background: none; cursor: pointer; perspective: 900px; color: inherit; font: inherit; }
+.mem-card .face { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; border-radius: 10px; backface-visibility: hidden; transition: transform .45s ease; }
+.mem-card .back { background: var(--code-bg); color: var(--tok-kw); font: 800 1.1rem/1 var(--mono); letter-spacing: .08em; border: 1px solid var(--code-line);
+  background-image: repeating-linear-gradient(45deg, transparent 0 10px, color-mix(in srgb, var(--tok-kw) 7%, transparent) 10px 11px); }
+.mem-card .front { background: var(--surface); border: 1px solid var(--line); transform: rotateY(180deg); font-size: .84rem; line-height: 1.35; }
+.mem-card .front.cmd { font: 700 .92rem/1.3 var(--mono); color: var(--f); }
+.mem-card.up .back { transform: rotateY(-180deg); }
+.mem-card.up .front { transform: rotateY(0deg); }
+.mem-card.matched .front { border-color: color-mix(in srgb, var(--ok) 60%, transparent); background: var(--ok-bg); }
+.mem-card.matched { cursor: default; }
+
+.link-board { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(40px, 9vw, 110px); margin-top: 10px; }
+.link-lines { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 0; }
+.link-lines path { fill: none; stroke: var(--f); stroke-width: 2.5; stroke-linecap: round; }
+.link-lines path.ok { stroke: var(--ok); }
+.link-lines path.bad { stroke: var(--bad); stroke-dasharray: 6 5; }
+.link-col { display: flex; flex-direction: column; gap: 10px; position: relative; z-index: 1; min-width: 0; }
+.link-item { position: relative; text-align: left; font: .9rem/1.35 var(--body); padding: 10px 12px; min-height: 48px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; cursor: pointer; }
+.link-item.left { font: 600 .85rem/1.35 var(--mono); }
+.link-item::after { content: ""; position: absolute; top: 50%; width: 11px; height: 11px; border-radius: 50%; background: var(--surface); border: 2px solid var(--line); transform: translateY(-50%); }
+.link-item.left::after { right: -7px; }
+.link-item.right::after { left: -7px; }
+.link-item:hover { border-color: var(--f); }
+.link-item.selected { border-color: var(--f); box-shadow: 0 0 0 3px color-mix(in srgb, var(--f) 25%, transparent); }
+.link-item.linked::after { background: var(--f); border-color: var(--f); }
+.link-item.ok { border-color: var(--ok); background: var(--ok-bg); }
+.link-item.ok::after { background: var(--ok); border-color: var(--ok); }
+.link-item.bad { border-color: var(--bad); background: var(--bad-bg); }
+.link-item.bad::after { background: var(--bad); border-color: var(--bad); }
+
 @media (max-width: 900px) {
   .app { grid-template-columns: minmax(0, 1fr); }
   .side { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 16px max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px)); gap: 12px; }
@@ -239,6 +298,13 @@ main { min-width: 0; }
   .track a { grid-template-columns: 50px minmax(0, 1fr); }
   .track .num, .track .prog { display: none; }
   .code pre { font-size: 12.5px; padding: 14px; }
+}
+@media (max-width: 640px) {
+  .mem-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .mem-card { min-height: 92px; }
+  .mem-card .front { font-size: .8rem; }
+  .link-item { font-size: .82rem; padding: 9px 10px; }
+  .link-item.left { font-size: .78rem; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
@@ -1343,7 +1409,8 @@ const resultTable = rows => `<p class="result-label">Resultado</p><div class="tb
 const NAV_ITEMS = [
   { group: 'Começo', items: [{ id: 'inicio', tag: 'INÍCIO', f: 'lab', label: 'Visão geral' }, { id: 'laboratorio', tag: 'LAB', f: 'lab', label: 'Banco de prática' }] },
   { group: 'Trilha', items: MODULES.map(m => ({ id: m.id, tag: m.tag, f: m.id, label: m.short, mod: m })) },
-  { group: 'Projeto', items: [{ id: 'barbearia', tag: 'PROJ', f: 'proj', label: 'Sistema Barbearia' }] }
+  { group: 'Projeto', items: [{ id: 'barbearia', tag: 'PROJ', f: 'proj', label: 'Sistema Barbearia' }] },
+  { group: 'Jogos', items: [{ id: 'jogos', tag: 'JOGOS', f: 'game', label: 'Arena SQL' }] }
 ];
 function renderNav(active) {
   document.getElementById('nav').innerHTML = NAV_ITEMS.map(g => `<div class="nav-group"><div class="nav-label">${g.group}</div>${g.items.map(it => {
@@ -1377,6 +1444,7 @@ function pageHome() {
     return `<li data-f="${m.id}"><a href="#${m.id}"><span class="num">${String(i).padStart(2, '0')}</span><span class="tag">${m.tag}</span><span><strong>${m.title}</strong><span class="d">${m.desc}</span></span><span class="prog">${d}/${m.lessons.length}</span></a></li>`;
   }).join('')}
     <li data-f="proj"><a href="#barbearia"><span class="num">${String(MODULES.length).padStart(2, '0')}</span><span class="tag">PROJ</span><span><strong>Projeto: Sistema Barbearia</strong><span class="d">Do MER ao script de implantação, em seis partes avaliadas, com verificador de estrutura.</span></span><span class="prog">100 pts</span></a></li>
+    <li data-f="game"><a href="#jogos"><span class="num">${String(MODULES.length + 1).padStart(2, '0')}</span><span class="tag">JOGOS</span><span><strong>Arena SQL</strong><span class="d">Complete as lacunas, jogo da memória e ligue os pontos para revisar tudo valendo XP.</span></span><span class="prog">XP</span></a></li>
   </ol>`;
 }
 
@@ -1416,8 +1484,8 @@ function pageModule(m) {
 }
 
 function pager(id) {
-  const order = ['inicio', 'laboratorio', ...MODULES.map(m => m.id), 'barbearia'];
-  const names = { inicio: 'Visão geral', laboratorio: 'Banco de prática', barbearia: 'Projeto: Sistema Barbearia' };
+  const order = ['inicio', 'laboratorio', ...MODULES.map(m => m.id), 'barbearia', 'jogos'];
+  const names = { inicio: 'Visão geral', laboratorio: 'Banco de prática', barbearia: 'Projeto: Sistema Barbearia', jogos: 'Arena SQL' };
   MODULES.forEach(m => names[m.id] = m.title);
   const i = order.indexOf(id), prev = order[i - 1], next = order[i + 1];
   return `<nav class="pager" aria-label="Paginação">${prev ? `<a href="#${prev}"><small>← Anterior</small><b>${names[prev]}</b></a>` : ''}${next ? `<a class="next" href="#${next}"><small>Próximo →</small><b>${names[next]}</b></a>` : ''}</nav>`;
@@ -1613,6 +1681,371 @@ function renderChecks(src) {
   document.getElementById('verif-summary').textContent = empty ? `${total} itens serão conferidos. Cole o script e clique em Verificar.` : (ok === total ? 'Todos os itens foram encontrados. Agora execute o script no MySQL.' : 'itens encontrados. Veja abaixo o que falta.');
 }
 
+/* =========================================================================
+   JOGOS (Arena SQL)
+   Lacunas: [[resposta|alternativa]] marca cada lacuna; "extra" são palavras
+   erradas que entram no banco de palavras como distratores.
+   ========================================================================= */
+const GAPS = [
+  { f: 'apoio', t: 'Conferir a estrutura', extra: ['USE', 'LIST'], code: `[[SHOW]] TABLES;
+[[DESC|DESCRIBE]] Cliente;
+SHOW [[CREATE]] TABLE Agendamento;` },
+  { f: 'ddl', t: 'Criar e selecionar o banco', extra: ['TABLE', 'OPEN'], code: `CREATE [[DATABASE|SCHEMA]] sistema_barbearia
+  CHARACTER SET utf8mb4;
+[[USE]] sistema_barbearia;` },
+  { f: 'ddl', t: 'Chave primária e valor único', extra: ['FOREIGN KEY', 'IDENTITY'], code: `CREATE TABLE Cliente (
+  idCliente  INT [[PRIMARY KEY]] [[AUTO_INCREMENT]],
+  cpfCliente CHAR(11) NOT NULL [[UNIQUE]]
+);` },
+  { f: 'ddl', t: 'Chave estrangeira', extra: ['PRIMARY KEY', 'CASCADE'], code: `-- impede apagar um cliente que tem agendamentos
+CONSTRAINT fk_agendamento_cliente
+  [[FOREIGN KEY]] (idCliente)
+  [[REFERENCES]] Cliente (idCliente)
+  ON DELETE [[RESTRICT|NO ACTION]]` },
+  { f: 'ddl', t: 'Mudar uma tabela existente', extra: ['UPDATE', 'MODIFY'], code: `[[ALTER]] TABLE Servico
+  [[ADD]] COLUMN duracaoMin SMALLINT NOT NULL [[DEFAULT]] 30;` },
+  { f: 'dml', t: 'Cadastrar um cliente', extra: ['ADD', 'SET'], code: `[[INSERT]] [[INTO]] Cliente (nomeCliente, cpfCliente)
+[[VALUES]] ('Ana Souza', '11122233344');` },
+  { f: 'dml', t: 'Reajustar os serviços ativos', extra: ['ALTER', 'HAVING'], code: `[[UPDATE]] Servico
+[[SET]] preco = preco * 1.10
+[[WHERE]] statusServico = 'Ativo';` },
+  { f: 'dml', t: 'Excluir os cancelados', extra: ['DROP', 'TRUNCATE'], code: `[[DELETE]] [[FROM]] Agendamento
+WHERE statusAgendamento = 'Cancelado';` },
+  { f: 'dql', t: 'Filtros especiais', extra: ['= NULL', 'IN', 'OR'], code: `SELECT nomeCliente FROM Cliente
+WHERE emailCliente [[LIKE]] '%@gmail.com';
+
+SELECT tipo FROM Servico
+WHERE preco [[BETWEEN]] 30 [[AND]] 50;
+
+SELECT idAgendamento FROM Agendamento
+WHERE observacoes [[IS NOT NULL]];` },
+  { f: 'dql', t: 'Agrupar e filtrar grupos', extra: ['WHERE', 'SUM'], code: `SELECT idProfissional, [[COUNT]](*) AS total
+FROM Agendamento
+[[GROUP BY]] idProfissional
+[[HAVING]] COUNT(*) > 2
+[[ORDER BY]] total DESC;` },
+  { f: 'dql', t: 'Agenda com JOIN', extra: ['WHERE', 'idCliente', 'UNION'], code: `SELECT c.nomeCliente, s.tipo, a.data
+FROM Agendamento AS a
+[[INNER JOIN|JOIN]] Cliente AS c [[ON]] c.idCliente = a.idCliente
+INNER JOIN Servico AS s ON s.idServico = a.[[idServico]];` },
+  { f: 'dql', t: 'Quem nunca agendou?', extra: ['INNER JOIN', '= NULL'], code: `SELECT c.nomeCliente
+FROM Cliente AS c
+[[LEFT JOIN|LEFT OUTER JOIN]] Agendamento AS a ON a.idCliente = c.idCliente
+WHERE a.idAgendamento [[IS NULL]];` },
+  { f: 'dcl', t: 'Permissões da recepção', extra: ['LOGIN', 'ALLOW'], code: `CREATE [[USER]] 'recepcao'@'localhost' IDENTIFIED BY 'Recep@2026';
+[[GRANT]] SELECT [[ON]] sistema_barbearia.* [[TO]] 'recepcao'@'localhost';
+[[REVOKE]] UPDATE ON sistema_barbearia.Cliente [[FROM]] 'recepcao'@'localhost';` },
+  { f: 'tcl', t: 'Reagendar com segurança', extra: ['SAVE', 'UNDO'], code: `[[START TRANSACTION|BEGIN]];
+UPDATE Agendamento SET hora = '10:00' WHERE idAgendamento = 8;
+[[SAVEPOINT]] reagendado;
+UPDATE Agendamento SET precoFinal = 0 WHERE idAgendamento = 8;  -- engano
+[[ROLLBACK]] TO SAVEPOINT reagendado;
+[[COMMIT]];` },
+  { f: 'adv', t: 'Índice e view', extra: ['KEY', 'UPDATE'], code: `CREATE [[INDEX]] idx_cliente_nome [[ON]] Cliente (nomeCliente);
+
+CREATE OR [[REPLACE]] VIEW vw_agenda [[AS]]
+SELECT idAgendamento, data, hora FROM Agendamento;` },
+  { f: 'adv', t: 'Trigger de validação', extra: ['OLD', 'AFTER', 'RAISE'], code: `[[DELIMITER]] $$
+-- valida ANTES de gravar
+CREATE [[TRIGGER]] trg_agendamento_valida
+[[BEFORE]] INSERT ON Agendamento
+FOR EACH [[ROW]]
+BEGIN
+  IF (SELECT statusCliente FROM Cliente WHERE idCliente = [[NEW]].idCliente) = 'Inativo' THEN
+    [[SIGNAL]] SQLSTATE '45000' SET MESSAGE_TEXT = 'Cliente inativo.';
+  END IF;
+END $$
+DELIMITER ;` },
+  { f: 'adv', t: 'Procedure e function', extra: ['EXEC', 'RUN'], code: `DELIMITER $$
+CREATE [[PROCEDURE]] sp_concluir([[IN]] p_id INT)
+BEGIN
+  UPDATE Agendamento SET statusAgendamento = 'Concluído' WHERE idAgendamento = p_id;
+END $$
+DELIMITER ;
+[[CALL]] sp_concluir(9);
+
+CREATE FUNCTION fn_idade(p_dtnasc DATE)
+[[RETURNS]] INT NOT DETERMINISTIC NO SQL
+[[RETURN]] TIMESTAMPDIFF(YEAR, p_dtnasc, CURDATE());` }
+];
+
+const MEM = [
+  ['CREATE TABLE', 'Cria uma tabela nova'], ['ALTER TABLE', 'Muda a estrutura de uma tabela que já existe'],
+  ['DROP TABLE', 'Apaga a tabela inteira: estrutura e dados'], ['TRUNCATE', 'Esvazia a tabela e reinicia o AUTO_INCREMENT'],
+  ['INSERT INTO', 'Grava linhas novas'], ['UPDATE ... SET', 'Altera valores de linhas existentes'],
+  ['DELETE FROM', 'Remove as linhas filtradas pelo WHERE'], ['SELECT DISTINCT', 'Tira linhas repetidas do resultado'],
+  ['GROUP BY', 'Junta linhas em grupos para contar ou somar'], ['HAVING', 'Filtra grupos depois da agregação'],
+  ['LEFT JOIN', 'Mantém todas as linhas da tabela da esquerda'], ['GRANT', 'Concede privilégios a um usuário'],
+  ['REVOKE', 'Retira privilégios de um usuário'], ['COMMIT', 'Confirma a transação'],
+  ['ROLLBACK', 'Desfaz a transação'], ['SAVEPOINT', 'Marca um ponto para desfazer só uma parte'],
+  ['DESC', 'Mostra as colunas de uma tabela'], ['CREATE INDEX', 'Acelera buscas por uma coluna'],
+  ['CREATE VIEW', 'Salva uma consulta com nome'], ['TRIGGER', 'Executa sozinho em INSERT, UPDATE ou DELETE']
+];
+
+const LINKS = [
+  { t: 'Comando → família', hint: 'Ligue cada comando à família a que ele pertence.', pairs: [
+    ['CREATE TABLE', 'DDL: define a estrutura'], ['UPDATE', 'DML: altera dados'], ['SELECT', 'DQL: consulta dados'],
+    ['REVOKE', 'DCL: controla permissões'], ['ROLLBACK', 'TCL: controla transações'] ] },
+  { t: 'Tipo de dado → coluna da barbearia', hint: 'Qual tipo o dicionário de dados usa em cada coluna?', pairs: [
+    ['INT', 'idCliente'], ['CHAR(11)', 'cpfCliente'], ['VARCHAR(60)', 'emailCliente'], ['DATE', 'dtnascCliente'],
+    ['TIME', 'hora'], ['DECIMAL(8,2)', 'precoFinal'], ['ENUM', 'statusAgendamento'] ] },
+  { t: 'Operador → filtro', hint: 'Ligue o operador ao filtro que ele resolve.', pairs: [
+    ['LIKE', "e-mail terminado em '@gmail.com'"], ['BETWEEN', 'preço de 30 a 50, incluindo os extremos'],
+    ['IN', 'profissional 1 ou 3'], ['IS NULL', 'agendamento sem observação'],
+    ['<>', "status diferente de 'Cancelado'"], ['HAVING', 'grupos com COUNT(*) > 2'] ] },
+  { t: 'JOIN → resultado', hint: 'O que cada junção devolve?', pairs: [
+    ['INNER JOIN', 'Só as linhas com par nas duas tabelas'], ['LEFT JOIN', 'Todas da esquerda, com NULL onde não há par'],
+    ['RIGHT JOIN', 'Todas da direita, com NULL onde não há par'], ['CROSS JOIN', 'Todas as combinações possíveis'],
+    ['UNION', 'Empilha o resultado de dois SELECT'] ] },
+  { t: 'Código de erro → causa', hint: 'Erros que aparecem no projeto da barbearia.', pairs: [
+    ['1046', 'Nenhum banco selecionado: faltou o USE'], ['1054', 'Coluna desconhecida ou apelido usado no WHERE'],
+    ['1062', 'Valor repetido em PRIMARY KEY ou UNIQUE'], ['1451', 'Apagar um pai que ainda tem filhos'],
+    ['1452', 'Filho aponta para um pai que não existe'], ['3819', 'Restrição CHECK violada'] ] },
+  { t: 'Objeto → para que serve', hint: 'Recursos avançados do MySQL.', pairs: [
+    ['INDEX', 'Acelera buscas e ordenações'], ['VIEW', 'Salva uma consulta com nome'],
+    ['TRIGGER', 'Executa sozinho em INSERT, UPDATE ou DELETE'], ['PROCEDURE', 'Rotina chamada com CALL'],
+    ['FUNCTION', 'Devolve um valor dentro de um SELECT'], ['DELIMITER', 'Troca o fim de comando para escrever BEGIN ... END'] ] },
+  { t: 'Transação → efeito', hint: 'O que acontece com os dados?', pairs: [
+    ['START TRANSACTION', 'Abre um bloco que só vale junto'], ['COMMIT', 'Torna as alterações definitivas'],
+    ['ROLLBACK', 'Desfaz tudo desde o início do bloco'], ['SAVEPOINT', 'Marca um ponto de retorno'],
+    ['ROLLBACK TO SAVEPOINT', 'Desfaz só até a marca'], ['CREATE TABLE', 'Faz COMMIT implícito no meio do bloco'] ] }
+];
+
+const XP_KEY = 'oficina-sql-xp';
+const MEM_BEST_KEY = 'oficina-sql-memoria-recorde';
+const LEVELS = [[0, 'Aprendiz de SELECT'], [150, 'Construtor de tabelas'], [400, 'Mestre do JOIN'], [800, 'DBA da barbearia']];
+const shuffle = list => { const a = [...list]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const normSql = v => String(v).trim().toUpperCase().replace(/\s+/g, ' ');
+const tagOf = f => (MODULES.find(m => m.id === f) || {}).tag || 'SQL';
+
+function addXP(n) { store.set(XP_KEY, store.get(XP_KEY, 0) + n); renderXP(); }
+function renderXP() {
+  const box = document.getElementById('xp-box');
+  if (!box) return;
+  const xp = store.get(XP_KEY, 0);
+  let k = 0; LEVELS.forEach((l, i) => { if (xp >= l[0]) k = i; });
+  const cur = LEVELS[k], next = LEVELS[k + 1];
+  const pct = next ? Math.round((xp - cur[0]) / (next[0] - cur[0]) * 100) : 100;
+  box.innerHTML = `<b>${xp} XP</b><span>Nível ${k + 1}: ${cur[1]}${next ? ` · faltam ${next[0] - xp} XP para ${next[1]}` : ' · nível máximo'}</span><div class="meter" aria-hidden="true"><i style="width:${pct}%"></i></div>`;
+}
+function setFeedback(id, text, kind) { const el = document.getElementById(id); if (el) { el.textContent = text; el.className = `feedback ${kind || ''}`; } }
+
+function pageGames() {
+  return `<div data-f="game"><div class="page-head"><div class="eyebrow"><span class="tag" style="padding:4px 6px">JOGOS</span> Revisão valendo pontos</div><h1>Arena SQL</h1>
+    <p class="lede">Três jogos para fixar os comandos do MySQL depois da trilha. Cada acerto rende XP, e o XP sobe o seu nível. A pontuação fica salva neste navegador.</p>
+    <div class="xp" id="xp-box"></div>
+    <div class="chips"><a class="chip" href="#jogos-lacunas">Complete as lacunas</a><a class="chip" href="#jogos-memoria">Jogo da memória</a><a class="chip" href="#jogos-ligue">Ligue os pontos</a></div></div>
+  <section class="game" id="jogos-lacunas"><div class="game-head"><div><span class="lesson-num">JOGO 1</span><h2>Complete as lacunas</h2></div><span class="pts">5 XP por lacuna</span></div>
+    <p class="goal">Digite nas lacunas ou toque nas palavras do banco para preencher a lacuna destacada. Algumas palavras do banco são pegadinhas.</p><div id="gap-stage"></div></section>
+  <section class="game" id="jogos-memoria"><div class="game-head"><div><span class="lesson-num">JOGO 2</span><h2>Jogo da memória</h2></div><span class="pts">até 60 XP</span></div>
+    <p class="goal">Encontre os pares: cada comando tem uma carta com a sua descrição. Quanto menos jogadas, mais XP.</p>
+    <div class="mem-stats" id="mem-stats"></div><div class="mem-grid" id="mem-grid"></div>
+    <p class="feedback" id="mem-feedback" role="status"></p><div class="checker-actions"><button class="btn" id="mem-new" type="button">Novo jogo</button></div></section>
+  <section class="game" id="jogos-ligue"><div class="game-head"><div><span class="lesson-num">JOGO 3</span><h2>Ligue os pontos</h2></div><span class="pts">5 XP por ligação</span></div>
+    <p class="goal">Toque em um item da esquerda e depois no par dele à direita. Para desfazer uma ligação, toque de novo no item da direita.</p><div id="link-stage"></div></section>
+  ${pager('jogos')}</div>`;
+}
+
+/* ---------- jogo 1: lacunas ---------- */
+const gap = { i: 0, current: 0, done: new Set() };
+function renderGap() {
+  const stage = document.getElementById('gap-stage');
+  const g = GAPS[gap.i], parts = g.code.split(/\[\[([^\]]+)\]\]/), answers = [];
+  let html = '', n = 0;
+  parts.forEach((p, k) => {
+    if (k % 2 === 0) { html += highlight(p); return; }
+    const alts = p.split('|'); answers.push(alts[0]);
+    html += `<input class="gap" id="gap-${gap.i}-${n}" data-n="${n}" data-ans="${esc(p)}" size="${Math.max(...alts.map(a => a.length)) + 1}" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Lacuna ${n + 1}">`;
+    n++;
+  });
+  gap.current = 0;
+  const bank = shuffle([...new Set([...answers, ...g.extra])]);
+  stage.innerHTML = `<div class="round-top" data-f="${g.f}"><span class="tag" style="padding:4px 6px">${tagOf(g.f)}</span><b>${esc(g.t)}</b><span class="round-count">Rodada ${gap.i + 1} de ${GAPS.length}</span></div>
+    <div class="code" data-f="${g.f}"><div class="cap"><span>${n} lacunas</span></div><pre><code>${html}</code></pre></div>
+    <div class="bank">${bank.map(w => `<button type="button" class="word" data-word="${esc(w)}">${esc(w)}</button>`).join('')}</div>
+    <p class="feedback" id="gap-feedback" role="status"></p>
+    <div class="checker-actions"><button class="btn primary" type="button" data-gap="check">Conferir</button><button class="btn" type="button" data-gap="reveal">Mostrar respostas</button><button class="btn" type="button" data-gap="prev">← Anterior</button><button class="btn" type="button" data-gap="next">Próxima →</button></div>`;
+  markCurrentGap();
+}
+const gapInputs = () => [...document.querySelectorAll('#gap-stage input.gap')];
+function markCurrentGap() { gapInputs().forEach((inp, k) => inp.classList.toggle('current', k === gap.current)); }
+function checkGap() {
+  const inputs = gapInputs();
+  let ok = 0, filled = 0;
+  inputs.forEach(inp => {
+    const good = inp.dataset.ans.split('|').map(normSql).includes(normSql(inp.value));
+    if (inp.value.trim()) filled++;
+    if (good) ok++;
+    inp.classList.toggle('ok', good);
+    inp.classList.toggle('bad', !good && !!inp.value.trim());
+  });
+  if (ok === inputs.length) {
+    if (!gap.done.has(gap.i)) { gap.done.add(gap.i); addXP(inputs.length * 5); setFeedback('gap-feedback', `Tudo certo! +${inputs.length * 5} XP`, 'ok'); }
+    else setFeedback('gap-feedback', 'Tudo certo!', 'ok');
+  } else if (filled < inputs.length) setFeedback('gap-feedback', `${ok} de ${inputs.length} certas. Ainda há ${inputs.length - filled} lacuna(s) vazia(s).`, 'bad');
+  else setFeedback('gap-feedback', `${ok} de ${inputs.length} certas. Corrija as marcadas em vermelho.`, 'bad');
+}
+function gapClick(e) {
+  const word = e.target.closest('.word');
+  if (word) {
+    const inputs = gapInputs();
+    const target = inputs[gap.current] || inputs.find(i => !i.value);
+    if (!target) return;
+    target.value = word.dataset.word;
+    target.classList.remove('ok', 'bad');
+    const nextEmpty = inputs.findIndex((inp, k) => k > inputs.indexOf(target) && !inp.value);
+    gap.current = nextEmpty > -1 ? nextEmpty : inputs.findIndex(inp => !inp.value);
+    markCurrentGap();
+    return;
+  }
+  const act = e.target.dataset && e.target.dataset.gap;
+  if (act === 'check') checkGap();
+  if (act === 'reveal') {
+    gapInputs().forEach(inp => { inp.value = inp.dataset.ans.split('|')[0]; inp.classList.remove('bad'); inp.classList.add('ok'); });
+    gap.done.add(gap.i);
+    setFeedback('gap-feedback', 'Respostas reveladas. Esta rodada não vale XP agora.', '');
+  }
+  if (act === 'prev' || act === 'next') { gap.i = (gap.i + (act === 'next' ? 1 : GAPS.length - 1)) % GAPS.length; renderGap(); }
+}
+
+/* ---------- jogo 2: memória ---------- */
+const mem = { cards: [], open: [], moves: 0, pairs: 0, lock: false, start: 0, timer: null, finished: false };
+function newMemory() {
+  clearInterval(mem.timer);
+  const chosen = shuffle(MEM).slice(0, 8);
+  Object.assign(mem, { open: [], moves: 0, pairs: 0, lock: false, start: 0, timer: null, finished: false,
+    cards: shuffle(chosen.flatMap((p, k) => [{ pair: k, kind: 'cmd', text: p[0] }, { pair: k, kind: 'desc', text: p[1] }])) });
+  document.getElementById('mem-grid').innerHTML = mem.cards.map((c, k) => `<button type="button" class="mem-card" data-card="${k}" aria-label="Carta ${k + 1}, virada"><span class="face back" aria-hidden="true">SQL</span><span class="face front ${c.kind}">${esc(c.text)}</span></button>`).join('');
+  setFeedback('mem-feedback', '', '');
+  memStats();
+}
+function memStats() {
+  const el = document.getElementById('mem-stats');
+  if (!el) { clearInterval(mem.timer); return; }
+  const secs = mem.start ? Math.floor(((mem.finished ? mem.end : Date.now()) - mem.start) / 1000) : 0;
+  const best = store.get(MEM_BEST_KEY, null);
+  el.innerHTML = `<span>Pares <b>${mem.pairs}/8</b></span><span>Jogadas <b>${mem.moves}</b></span><span>Tempo <b>${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}</b></span><span>Recorde <b>${best ? best + ' jogadas' : '—'}</b></span>`;
+}
+function memClick(e) {
+  const btn = e.target.closest('.mem-card');
+  if (!btn || mem.lock || mem.finished) return;
+  const k = Number(btn.dataset.card), c = mem.cards[k];
+  if (c.up) return;
+  if (!mem.start) { mem.start = Date.now(); mem.timer = setInterval(memStats, 1000); }
+  c.up = true; btn.classList.add('up'); btn.setAttribute('aria-label', c.text);
+  mem.open.push(k);
+  if (mem.open.length < 2) return;
+  mem.moves++;
+  const [a, b] = mem.open, ea = document.querySelector(`[data-card="${a}"]`), eb = document.querySelector(`[data-card="${b}"]`);
+  if (mem.cards[a].pair === mem.cards[b].pair) {
+    [ea, eb].forEach(el => { el.classList.add('matched'); el.disabled = true; });
+    mem.open = []; mem.pairs++;
+    if (mem.pairs === 8) {
+      mem.finished = true; mem.end = Date.now(); clearInterval(mem.timer);
+      const bonus = mem.moves <= 12 ? 20 : mem.moves <= 16 ? 10 : 0;
+      const best = store.get(MEM_BEST_KEY, null);
+      if (!best || mem.moves < best) store.set(MEM_BEST_KEY, mem.moves);
+      addXP(40 + bonus);
+      setFeedback('mem-feedback', `Você achou os 8 pares em ${mem.moves} jogadas! +${40 + bonus} XP${bonus ? ` (bônus de ${bonus} por poucas jogadas)` : ''}`, 'ok');
+    }
+  } else {
+    mem.lock = true;
+    setTimeout(() => {
+      [a, b].forEach(i => { mem.cards[i].up = false; });
+      [ea, eb].forEach((el, i) => { el.classList.remove('up'); el.setAttribute('aria-label', `Carta ${[a, b][i] + 1}, virada`); });
+      mem.open = []; mem.lock = false;
+    }, 1000);
+  }
+  memStats();
+}
+
+/* ---------- jogo 3: ligue os pontos ---------- */
+const lk = { i: 0, links: new Map(), sel: null, checked: false, scored: new Set() };
+function renderLink() {
+  const r = LINKS[lk.i];
+  Object.assign(lk, { links: new Map(), sel: null, checked: false });
+  const left = shuffle(r.pairs.map((p, k) => ({ k, text: p[0] }))), right = shuffle(r.pairs.map((p, k) => ({ k, text: p[1] })));
+  document.getElementById('link-stage').innerHTML = `<div class="round-top"><b>${esc(r.t)}</b><span class="round-count">Rodada ${lk.i + 1} de ${LINKS.length}</span></div>
+    <p class="goal" style="margin:0">${esc(r.hint)}</p>
+    <div class="link-board" id="link-board"><svg class="link-lines" id="link-svg" aria-hidden="true"></svg>
+      <div class="link-col">${left.map(x => `<button type="button" class="link-item left" data-side="L" data-k="${x.k}">${esc(x.text)}</button>`).join('')}</div>
+      <div class="link-col">${right.map(x => `<button type="button" class="link-item right" data-side="R" data-k="${x.k}">${esc(x.text)}</button>`).join('')}</div></div>
+    <p class="feedback" id="link-feedback" role="status"></p>
+    <div class="checker-actions"><button class="btn primary" type="button" data-link="check">Conferir</button><button class="btn" type="button" data-link="clear">Recomeçar rodada</button><button class="btn" type="button" data-link="prev">← Anterior</button><button class="btn" type="button" data-link="next">Próxima →</button></div>`;
+  updateLinks();
+}
+function updateLinks() {
+  const linkedR = new Set(lk.links.values());
+  document.querySelectorAll('#link-board .link-item').forEach(el => {
+    const k = Number(el.dataset.k), isL = el.dataset.side === 'L';
+    el.classList.toggle('selected', isL && lk.sel === k);
+    el.classList.toggle('linked', isL ? lk.links.has(k) : linkedR.has(k));
+    if (!lk.checked) el.classList.remove('ok', 'bad');
+  });
+  drawLinks();
+}
+function drawLinks() {
+  const board = document.getElementById('link-board'), svg = document.getElementById('link-svg');
+  if (!board || !svg) return;
+  const b = board.getBoundingClientRect();
+  svg.setAttribute('width', b.width); svg.setAttribute('height', b.height);
+  let paths = '';
+  for (const [l, r] of lk.links) {
+    const le = board.querySelector(`[data-side="L"][data-k="${l}"]`).getBoundingClientRect();
+    const re = board.querySelector(`[data-side="R"][data-k="${r}"]`).getBoundingClientRect();
+    const x1 = le.right - b.left, y1 = le.top + le.height / 2 - b.top, x2 = re.left - b.left, y2 = re.top + re.height / 2 - b.top, mx = (x1 + x2) / 2;
+    paths += `<path class="${lk.checked ? (l === r ? 'ok' : 'bad') : ''}" d="M${x1} ${y1} C${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}"></path>`;
+  }
+  svg.innerHTML = paths;
+}
+function linkClick(e) {
+  const item = e.target.closest('.link-item');
+  if (item) {
+    if (lk.checked) { setFeedback('link-feedback', 'Rodada conferida. Use "Recomeçar rodada" ou vá para a próxima.', ''); return; }
+    const k = Number(item.dataset.k);
+    if (item.dataset.side === 'L') lk.sel = lk.sel === k ? null : k;
+    else {
+      for (const [l, r] of lk.links) if (r === k) lk.links.delete(l);
+      if (lk.sel !== null) { lk.links.set(lk.sel, k); lk.sel = null; }
+    }
+    updateLinks();
+    return;
+  }
+  const act = e.target.dataset && e.target.dataset.link;
+  const total = LINKS[lk.i].pairs.length;
+  if (act === 'check') {
+    if (lk.links.size < total) { setFeedback('link-feedback', `Ligue todos os itens antes de conferir (${lk.links.size} de ${total}).`, 'bad'); return; }
+    lk.checked = true;
+    let ok = 0;
+    for (const [l, r] of lk.links) {
+      const good = l === r; if (good) ok++;
+      document.querySelector(`#link-board [data-side="L"][data-k="${l}"]`).classList.add(good ? 'ok' : 'bad');
+      document.querySelector(`#link-board [data-side="R"][data-k="${r}"]`).classList.add(good ? 'ok' : 'bad');
+    }
+    drawLinks();
+    let msg = ok === total ? 'Todas as ligações estão certas!' : `${ok} de ${total} ligações certas. As erradas estão tracejadas.`;
+    if (!lk.scored.has(lk.i)) { lk.scored.add(lk.i); if (ok) { addXP(ok * 5); msg += ` +${ok * 5} XP`; } }
+    setFeedback('link-feedback', msg, ok === total ? 'ok' : 'bad');
+  }
+  if (act === 'clear') renderLink();
+  if (act === 'prev' || act === 'next') { lk.i = (lk.i + (act === 'next' ? 1 : LINKS.length - 1)) % LINKS.length; renderLink(); }
+}
+
+function initGames() {
+  renderXP();
+  renderGap(); newMemory(); renderLink();
+  const gs = document.getElementById('gap-stage');
+  gs.addEventListener('click', gapClick);
+  gs.addEventListener('focusin', e => { if (e.target.matches('input.gap')) { gap.current = Number(e.target.dataset.n); markCurrentGap(); } });
+  gs.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('input.gap')) checkGap(); });
+  gs.addEventListener('input', e => { if (e.target.matches('input.gap')) e.target.classList.remove('ok', 'bad'); });
+  document.getElementById('mem-grid').addEventListener('click', memClick);
+  document.getElementById('mem-new').addEventListener('click', newMemory);
+  document.getElementById('link-stage').addEventListener('click', linkClick);
+  if (document.fonts) document.fonts.ready.then(drawLinks);
+}
+window.addEventListener('resize', drawLinks);
+
 /* ---------- roteamento e eventos ---------- */
 function route() {
   const hash = location.hash.slice(1) || 'inicio';
@@ -1620,17 +2053,19 @@ function route() {
   const lm = hash.match(/^([a-z]+)-(\d+)$/);
   if (lm && MODULES.some(m => m.id === lm[1])) { page = lm[1]; anchor = hash; }
   if (hash.startsWith('barbearia-')) { page = 'barbearia'; anchor = hash; }
+  if (hash.startsWith('jogos-')) { page = 'jogos'; anchor = hash; }
   const mod = MODULES.find(m => m.id === page);
-  const html = mod ? pageModule(mod) : page === 'laboratorio' ? pageLab() : page === 'barbearia' ? pageProject() : pageHome();
+  const html = mod ? pageModule(mod) : page === 'laboratorio' ? pageLab() : page === 'barbearia' ? pageProject() : page === 'jogos' ? pageGames() : pageHome();
   if (view.dataset.page !== page) {
     view.innerHTML = html; view.dataset.page = page;
+    if (page === 'jogos') initGames();
     if (page === 'barbearia') {
       const ta = document.getElementById('verif-input');
       ta.value = store.get(DRAFT_KEY, '');
       renderChecks(ta.value);
     }
   }
-  renderNav(mod || ['laboratorio', 'barbearia'].includes(page) ? page : 'inicio');
+  renderNav(mod || ['laboratorio', 'barbearia', 'jogos'].includes(page) ? page : 'inicio');
   const target = anchor && document.getElementById(anchor);
   if (target) target.scrollIntoView({ block: 'start' }); else window.scrollTo(0, 0);
 }
